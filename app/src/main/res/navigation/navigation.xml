@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/marketListFragment"
-        android:name="com.example.ecommerce.MarketListFragment"
+        android:name="com.example.ecommerce.marketlist.MarketListFragment"
         android:label="market_list_fragment"
         tools:layout="@layout/market_list_fragment" />
 </navigation>
