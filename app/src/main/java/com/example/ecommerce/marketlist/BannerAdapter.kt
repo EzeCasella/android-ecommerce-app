@@ -1,5 +1,6 @@
 package com.example.ecommerce.marketlist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -25,7 +26,11 @@ class BannerAdapter(/* */): ListAdapter<DataItem, RecyclerView.ViewHolder>(Banne
         }
     }
 
+
+    private var viewHolderAmount = 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        Log.i("i/BannerAdapter","ViewHolders Amount: $viewHolderAmount")
+        viewHolderAmount++
         return ViewHolder.from(parent)
     }
 
