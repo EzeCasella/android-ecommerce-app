@@ -38,19 +38,36 @@ class MarketListFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
+        /*
+        * Banners list setup
+        * */
         val bannerLayoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
-
         binding.bannerList.layoutManager = bannerLayoutManager
 
-        val adapter = BannerAdapter()
-        binding.bannerList.adapter = adapter
+        val bannerAdapter = BannerAdapter()
+        binding.bannerList.adapter = bannerAdapter
 
-//        TODO("Add viewModel's banners listener submiting list")
         marketListViewModel.banners.observe(viewLifecycleOwner, Observer {
             it?.let{
-                adapter.submitBannerList(it)
+                bannerAdapter.submitBannerList(it)
             }
         })
+
+        /*
+        * Products list setup
+        * */
+        val productsLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        binding.productsList.layoutManager = productsLayoutManager
+
+        val productAdapter =  ProductAdapter()
+        binding.productsList.adapter = productAdapter
+
+        marketListViewModel.products.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                productAdapter.submitProductsList(it)
+            }
+        })
+
 
         return binding.root
     }

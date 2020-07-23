@@ -13,13 +13,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BannerAdapter(/* */): ListAdapter<DataItem, RecyclerView.ViewHolder>(BannerDiffCallback()) {
+class BannerAdapter(/* */): ListAdapter<BannerItem, RecyclerView.ViewHolder>(BannerDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun submitBannerList(list: List<Banner>?) {
         adapterScope.launch {
-            val items = list?.map { DataItem.BannerItem(it)}
+            val items = list?.map { BannerItem.DataClass(it)}
             withContext(Dispatchers.Main) {
                 submitList(items)
             }
@@ -37,7 +37,7 @@ class BannerAdapter(/* */): ListAdapter<DataItem, RecyclerView.ViewHolder>(Banne
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                val bannerItem = getItem(position) as DataItem.BannerItem
+                val bannerItem = getItem(position) as BannerItem.DataClass
                 holder.bind(bannerItem.banner)
             }
         }
@@ -62,20 +62,20 @@ class BannerAdapter(/* */): ListAdapter<DataItem, RecyclerView.ViewHolder>(Banne
     }
 }
 
-class BannerDiffCallback : DiffUtil.ItemCallback<DataItem>() {
-    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+class BannerDiffCallback : DiffUtil.ItemCallback<BannerItem>() {
+    override fun areItemsTheSame(oldItem: BannerItem, newItem: BannerItem): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+    override fun areContentsTheSame(oldItem: BannerItem, newItem: BannerItem): Boolean {
         return oldItem == newItem
     }
 }
 
-sealed class DataItem {
-
-    data class BannerItem(val banner: Banner) : DataItem() {
+sealed class BannerItem() {
+    data class DataClass(val banner: Banner): BannerItem(){
         override val id = banner.id
     }
+
     abstract val id: Int
 }
