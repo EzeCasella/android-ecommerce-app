@@ -41,7 +41,7 @@
                 android:layout_marginBottom="15dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="@{banner.title}"
-                android:textColor="@color/cardview_light_background"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="30sp"
                 tools:text="Brazilian Bananas" />
 
@@ -53,7 +53,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="55dp"
                 android:text="@{banner.description}"
-                android:textColor="@color/cardview_light_background"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="18sp"
                 tools:text="Product of the month" />
         </androidx.cardview.widget.CardView>

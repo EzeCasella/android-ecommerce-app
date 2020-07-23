@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">eMarket</string>
+    <string name="searchbar_placeholder">Search</string>
 </resources>
