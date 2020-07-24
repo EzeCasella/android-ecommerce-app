@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ProductAdapter() :
+class ProductAdapter(val clickListener: ProductListener) :
     ListAdapter<ProductListItem, RecyclerView.ViewHolder>(ProductDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -40,7 +40,7 @@ class ProductAdapter() :
         when (holder) {
             is ViewHolder -> {
                 val productItem = getItem(position) as ProductListItem.ProductItem
-                holder.bind(productItem.product)
+                holder.bind(clickListener,productItem.product)
             }
         }
     }
@@ -48,8 +48,9 @@ class ProductAdapter() :
     class ViewHolder private constructor(val binding: ListItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Product) {
+        fun bind(clickListener: ProductListener,item: Product) {
             binding.product = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -72,6 +73,10 @@ class ProductDiffCallback : DiffUtil.ItemCallback<ProductListItem>() {
     override fun areContentsTheSame(oldItem: ProductListItem, newItem: ProductListItem): Boolean {
         return oldItem == newItem
     }
+}
+
+class ProductListener(val clickListener: (product: Product) -> Unit) {
+    fun onClick(product: Product) = clickListener(product)
 }
 
 sealed class ProductListItem {

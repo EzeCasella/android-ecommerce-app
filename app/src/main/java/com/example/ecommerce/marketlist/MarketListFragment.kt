@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.MarketListFragmentBinding
+import kotlinx.android.synthetic.main.list_item_product.*
 
 class MarketListFragment : Fragment() {
 
@@ -30,9 +31,7 @@ class MarketListFragment : Fragment() {
             inflater, R.layout.market_list_fragment, container, false
         )
 
-        val viewModelFactory = MarketListViewModelFactory()
-
-        val marketListViewModel = ViewModelProvider(this, viewModelFactory).get(MarketListViewModel::class.java)
+        val marketListViewModel = ViewModelProvider(this).get(MarketListViewModel::class.java)
 
         binding.marketListViewModel = marketListViewModel
 
@@ -59,7 +58,10 @@ class MarketListFragment : Fragment() {
         val productsLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.productsList.layoutManager = productsLayoutManager
 
-        val productAdapter =  ProductAdapter()
+        val productAdapter =  ProductAdapter( ProductListener { prod ->
+            marketListViewModel.onAddButtonClicked(prod)
+//            add_button.visibility = View.GONE
+        })
         binding.productsList.adapter = productAdapter
 
         marketListViewModel.products.observe(viewLifecycleOwner, Observer {

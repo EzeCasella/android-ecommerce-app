@@ -1,9 +1,11 @@
 package com.example.ecommerce.marketlist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.ecommerce.domain.Banner
+import com.example.ecommerce.domain.Cart
 import com.example.ecommerce.domain.Category
 import com.example.ecommerce.domain.Product
 
@@ -17,6 +19,14 @@ class MarketListViewModel : ViewModel() {
     val products: LiveData<List<Product>>
         get() = _products
 
+    private val cart = Cart()
+
+    fun onAddButtonClicked(product: Product){
+//        TODO(Implement)
+        Log.i("i/MarketListViewModel", "Add button clicked for id: ${product.id}")
+        cart.add(product)
+        Log.i("i/MarketListViewModel","Cart total: ${cart.total}")
+    }
 
     init {
         _banners.value = listOf(
@@ -35,4 +45,6 @@ class MarketListViewModel : ViewModel() {
 
         )
     }
+
+
 }
