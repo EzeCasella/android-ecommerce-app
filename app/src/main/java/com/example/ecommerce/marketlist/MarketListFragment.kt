@@ -62,6 +62,8 @@ class MarketListFragment : Fragment() {
         val productAdapter =  CartLineAdapter( CartLineListener { cartLine ->
             marketListViewModel.onAddButtonClicked(cartLine)
 //            add_button.visibility = View.GONE
+        }, CartLineListener { cartLine ->
+            marketListViewModel.onRemoveButtonClicked(cartLine)
         })
         binding.productsList.adapter = productAdapter
 

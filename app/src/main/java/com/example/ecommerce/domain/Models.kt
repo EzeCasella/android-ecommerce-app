@@ -51,6 +51,19 @@ class Cart() {
         Log.i("i/Models","Products count: ${_productsCount.value}")
     }
 
+    fun remove(product: Product) {
+        Log.i("i/Models","REMOVE called prods amount: ${_productsCount.value}")
+
+        val cartLine = cartLines.find { it.product.id == product.id }
+        cartLine?.removeProduct()
+//        TODO ("Uncomment this removal after correct cart modelling")
+//        if (cartLine?.prodAmount == 0) {
+//            cartLines.remove(cartLine)
+//        }
+        _productsCount.value = _productsCount.value?.minus(1)
+
+    }
+
 //    fun isEmpty(): Boolean {
 //        return cartLines.forEach
 //    }
@@ -63,6 +76,9 @@ data class CartLine(
 
     var prodAmount = 0
     var total: BigDecimal = 0.toBigDecimal()
+    init {
+        prodAmount = 0
+    }
 
     fun addProduct() {
         prodAmount++

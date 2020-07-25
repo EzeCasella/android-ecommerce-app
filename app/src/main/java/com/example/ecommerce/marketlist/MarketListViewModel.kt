@@ -30,6 +30,10 @@ class MarketListViewModel : ViewModel() {
         cart.add(cartLine.product)
         Log.i("i/MarketListViewModel","Cart total: ${cart.totalCost}")
     }
+    fun onRemoveButtonClicked(cartLine: CartLine) {
+        Log.i("i/MarketListViewModel","#### REMOVE PROD Cart total: ${cart.totalCost}")
+        cart.remove(cartLine.product)
+    }
 
     init {
         _banners.value = listOf(

@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
 private val ITEM_VIEW_TYPE_CATEGORY = 0
 private val ITEM_VIEW_TYPE_CARTLINE = 1
 
-class CartLineAdapter(val clickListener: CartLineListener) :
+class CartLineAdapter(val addClickListener: CartLineListener, val removeClickListener: CartLineListener) :
     ListAdapter<CartLineListItem, RecyclerView.ViewHolder>(ProductDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -70,7 +70,7 @@ class CartLineAdapter(val clickListener: CartLineListener) :
         when (holder) {
             is ViewHolder -> {
                 val productItem = getItem(position) as CartLineListItem.CartLineItem
-                holder.bind(clickListener,productItem.cartLine)
+                holder.bind(addClickListener, removeClickListener,productItem.cartLine)
             }
             is TextViewHolder -> {
                 val categoryItem = getItem(position) as CartLineListItem.CategoryItem
@@ -89,7 +89,7 @@ class CartLineAdapter(val clickListener: CartLineListener) :
     class TextViewHolder private constructor(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(string: String) {
-            itemView.text.text = string
+            itemView.text.text = string.toLowerCase().capitalize()
         }
         companion object {
             fun from(parent: ViewGroup): TextViewHolder {
@@ -103,9 +103,10 @@ class CartLineAdapter(val clickListener: CartLineListener) :
     class ViewHolder private constructor(val binding: ListItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(clickListener: CartLineListener,item: CartLine) {
+        fun bind(addClickListener: CartLineListener, removeClickListener: CartLineListener,item: CartLine) {
             binding.cartLine = item
-            binding.clickListener = clickListener
+            binding.addClickListener = addClickListener
+            binding.removeClickListener = removeClickListener
 
             // TODO setear visibility de buttons
             Log.i("i/ProductAdapter","item amount: ${item.prodAmount}")
@@ -132,7 +133,6 @@ class CartLineAdapter(val clickListener: CartLineListener) :
 
 class ProductDiffCallback : DiffUtil.ItemCallback<CartLineListItem>() {
     override fun areItemsTheSame(oldItem: CartLineListItem, newItem: CartLineListItem): Boolean {
-        Log.i("i/ProductAdapter", "Are items de same?, oldItem: ${oldItem.prodAmount}")
         return oldItem.id == newItem.id
     }
 
