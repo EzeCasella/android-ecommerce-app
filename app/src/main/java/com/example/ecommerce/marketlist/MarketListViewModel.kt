@@ -3,11 +3,9 @@ package com.example.ecommerce.marketlist
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.ecommerce.domain.Banner
-import com.example.ecommerce.domain.Cart
-import com.example.ecommerce.domain.Category
-import com.example.ecommerce.domain.Product
+import com.example.ecommerce.domain.*
 
 class MarketListViewModel : ViewModel() {
 
@@ -16,16 +14,21 @@ class MarketListViewModel : ViewModel() {
         get() = _banners
 
     private val _products = MutableLiveData<List<Product>>()
-    val products: LiveData<List<Product>>
+    private val products: LiveData<List<Product>>
         get() = _products
 
     private val cart = Cart()
 
-    fun onAddButtonClicked(product: Product){
+    val cartLines = cart.cartLines
+
+    val cartProducts: LiveData<Int>
+        get() = cart.productsCount
+
+    fun onAddButtonClicked(cartLine: CartLine){
 //        TODO(Implement)
-        Log.i("i/MarketListViewModel", "Add button clicked for id: ${product.id}")
-        cart.add(product)
-        Log.i("i/MarketListViewModel","Cart total: ${cart.total}")
+        Log.i("i/MarketListViewModel", "Add button clicked for id: ${cartLine.product.id}")
+        cart.add(cartLine.product)
+        Log.i("i/MarketListViewModel","Cart total: ${cart.totalCost}")
     }
 
     init {
@@ -37,13 +40,16 @@ class MarketListViewModel : ViewModel() {
 
         _products.value = listOf(
             Product(1, "Kiwi", Category.FRUIT,35.toBigDecimal(),"https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-fruits-over-purple-background-royalty-free-image-733479343-1536169938.jpg",""),
-            Product(2, "Grapefruit", Category.FRUIT, 45.toBigDecimal(),"https://wiselivingmagazine.co.uk/wp-content/uploads/2020/06/Health-benefits-grapefruit-main.jpg",""),
+            Product(2, "Grapefruit", Category.VEGETABLE, 45.toBigDecimal(),"https://wiselivingmagazine.co.uk/wp-content/uploads/2020/06/Health-benefits-grapefruit-main.jpg",""),
             Product(3, "Watermelon", Category.FRUIT, 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg",""),
-            Product(1, "Kiwi", Category.FRUIT,35.toBigDecimal(),"https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-fruits-over-purple-background-royalty-free-image-733479343-1536169938.jpg",""),
-            Product(2, "Grapefruit", Category.FRUIT, 45.toBigDecimal(),"https://wiselivingmagazine.co.uk/wp-content/uploads/2020/06/Health-benefits-grapefruit-main.jpg",""),
-            Product(3, "Watermelon", Category.FRUIT, 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg","")
-
+            Product(4, "Kiwi", Category.VEGETABLE,35.toBigDecimal(),"https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-fruits-over-purple-background-royalty-free-image-733479343-1536169938.jpg",""),
+            Product(5, "Grapefruit", Category.VEGETABLE, 45.toBigDecimal(),"https://wiselivingmagazine.co.uk/wp-content/uploads/2020/06/Health-benefits-grapefruit-main.jpg","")
+//            Product(6, "Watermelon", Category.FRUIT, 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg","")
         )
+
+        products.value?.map {
+            cart.addEmptyCartLine(it)
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.ecommerce.marketlist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -58,18 +59,23 @@ class MarketListFragment : Fragment() {
         val productsLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.productsList.layoutManager = productsLayoutManager
 
-        val productAdapter =  ProductAdapter( ProductListener { prod ->
-            marketListViewModel.onAddButtonClicked(prod)
+        val productAdapter =  CartLineAdapter( CartLineListener { cartLine ->
+            marketListViewModel.onAddButtonClicked(cartLine)
 //            add_button.visibility = View.GONE
         })
         binding.productsList.adapter = productAdapter
 
-        marketListViewModel.products.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                productAdapter.submitProductsList(it)
-            }
-        })
+//        marketListViewModel.cartLines.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                Log.i("i/MarketListFragment","Hubo algun cambio")
+//                productAdapter.submitProductsList(it.toList())
+//            }
+//        })
 
+        marketListViewModel.cartProducts.observe(viewLifecycleOwner, Observer {
+            Log.i("i/MarketListFragment","Hubo algun cambio en prodsAmount: $it")
+            productAdapter.submitProductsList(marketListViewModel.cartLines)
+        })
 
         return binding.root
     }
