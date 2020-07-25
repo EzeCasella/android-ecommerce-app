@@ -13,7 +13,6 @@ import com.example.ecommerce.domain.Banner
 fun ImageView.setImage(imgUrl: String?) {
     imgUrl?.let {
         val imgUri = it.toUri().buildUpon().scheme("https").build()
-        Log.i("i/BindingUtils","URI: $imgUri")
         Glide.with(this.context)
             .load(imgUri)
 //            .apply(RequestOptions().placeholder("image placeholder"))

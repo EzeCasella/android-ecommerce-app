@@ -29,7 +29,6 @@ class BannerAdapter(/* */): ListAdapter<BannerItem, RecyclerView.ViewHolder>(Ban
 
     private var viewHolderAmount = 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.i("i/BannerAdapter","ViewHolders Amount: $viewHolderAmount")
         viewHolderAmount++
         return ViewHolder.from(parent)
     }
