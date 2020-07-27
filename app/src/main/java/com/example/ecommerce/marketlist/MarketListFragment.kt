@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.MarketListFragmentBinding
 import kotlinx.android.synthetic.main.list_item_product.*
+import kotlinx.android.synthetic.main.market_list_fragment.*
 
 class MarketListFragment : Fragment() {
 
@@ -61,6 +64,7 @@ class MarketListFragment : Fragment() {
 
         val productAdapter =  CartLineAdapter( CartLineListener { cartLine ->
             marketListViewModel.onAddButtonClicked(cartLine)
+
 //            add_button.visibility = View.GONE
         }, CartLineListener { cartLine ->
             marketListViewModel.onRemoveButtonClicked(cartLine)
@@ -79,6 +83,25 @@ class MarketListFragment : Fragment() {
             productAdapter.submitProductsList(marketListViewModel.cartLines)
         })
 
+        binding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.i("i/MarketListFragment", "Query text changed")
+                if (newText.isNullOrEmpty()) {
+                    binding.bannerList.visibility = View.VISIBLE
+                } else {
+                    binding.bannerList.visibility = View.GONE
+                }
+                productAdapter.filter.filter(newText)
+                return false
+            }
+        })
+
         return binding.root
     }
+
+
 }

@@ -14,8 +14,6 @@ class MarketListViewModel : ViewModel() {
         get() = _banners
 
     private val _products = MutableLiveData<List<Product>>()
-    private val products: LiveData<List<Product>>
-        get() = _products
 
     private val cart = Cart()
 
@@ -25,10 +23,7 @@ class MarketListViewModel : ViewModel() {
         get() = cart.productsCount
 
     fun onAddButtonClicked(cartLine: CartLine){
-//        TODO(Implement)
-        Log.i("i/MarketListViewModel", "Add button clicked for id: ${cartLine.product.id}")
         cart.add(cartLine.product)
-        Log.i("i/MarketListViewModel","Cart total: ${cart.totalCost}")
     }
     fun onRemoveButtonClicked(cartLine: CartLine) {
         Log.i("i/MarketListViewModel","#### REMOVE PROD Cart total: ${cart.totalCost}")
@@ -51,7 +46,7 @@ class MarketListViewModel : ViewModel() {
 //            Product(6, "Watermelon", Category.FRUIT, 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg","")
         )
 
-        products.value?.map {
+        _products.value?.map {
             cart.addEmptyCartLine(it)
         }
     }
