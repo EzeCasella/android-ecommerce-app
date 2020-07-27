@@ -36,28 +36,32 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
     * Here is where the products list is grouped in categories
     *
     * */
-    fun submitProductsList(list: List<CartLine>?) {
-        adapterScope.launch {
-            var items: List<CartLineListItem> = listOf()
-            if (list != null) {
-                cartLinesList = list.toMutableList()
-                if (cartLinesFullList.isEmpty()) cartLinesFullList = list.toList()
+    fun submitProductsList(list: List<CartLine>?, filterQuery: String) {
+        if (filterQuery.isNullOrEmpty()) {
+            adapterScope.launch {
+                var items: List<CartLineListItem> = listOf()
+                if (list != null) {
+                    cartLinesList = list.toMutableList()
+                    if (cartLinesFullList.isEmpty()) cartLinesFullList = list.toList()
 
-                var filteringList: List<CartLine>
-                var rest = cartLinesList.toMutableList()
-                var category : Category
+                    var filteringList: List<CartLine>
+                    var rest = cartLinesList.toMutableList()
+                    var category: Category
 
-                while (rest.isNotEmpty()){
-                    category = rest.first().product.category
-                    filteringList = rest.filter { it.product.category == category}
-                    rest.removeIf{
-                        filteringList.contains(it)
+                    while (rest.isNotEmpty()) {
+                        category = rest.first().product.category
+                        filteringList = rest.filter { it.product.category == category }
+                        rest.removeIf {
+                            filteringList.contains(it)
+                        }
+                        items = items + listOf(CartLineListItem.CategoryItem(category)) +
+                                filteringList.map { CartLineListItem.CartLineItem(it) }
                     }
-                    items = items + listOf(CartLineListItem.CategoryItem(category)) +
-                            filteringList.map { CartLineListItem.CartLineItem(it) }
+                    submitList(items)
                 }
-                submitList(items)
             }
+        } else {
+            filter.filter(filterQuery)
         }
     }
 
@@ -165,7 +169,7 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             cartLinesList.clear()
             cartLinesList.addAll(results?.values as List<CartLine>)
-            submitProductsList(cartLinesList)
+            submitProductsList(cartLinesList,"")
         }
 
 }

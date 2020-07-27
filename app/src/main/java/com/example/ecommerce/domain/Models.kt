@@ -56,17 +56,17 @@ class Cart() {
 
         val cartLine = cartLines.find { it.product.id == product.id }
         cartLine?.removeProduct()
-//        TODO ("Uncomment this removal after correct cart modelling")
-//        if (cartLine?.prodAmount == 0) {
-//            cartLines.remove(cartLine)
-//        }
+        if (cartLine?.prodAmount == 0) {
+            cartLines.remove(cartLine)
+        }
         _productsCount.value = _productsCount.value?.minus(1)
 
     }
 
-//    fun isEmpty(): Boolean {
-//        return cartLines.forEach
-//    }
+    fun has(product: Product): Boolean {
+        val cartLine = cartLines.find { it.product.id == product.id }
+        return cartLine != null
+    }
 }
 
 data class CartLine(

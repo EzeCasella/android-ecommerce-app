@@ -13,22 +13,15 @@ class MarketListViewModel : ViewModel() {
     val banners: LiveData<List<Banner>>
         get() = _banners
 
-    private val _products = MutableLiveData<List<Product>>()
+    private var _products = mutableListOf<Product>()
 
     private val cart = Cart()
 
-    val cartLines = cart.cartLines
+    private lateinit var _cartLines: MutableList<CartLine>
+    val cartLines: List<CartLine>
+        get() = _cartLines
 
-    val cartProducts: LiveData<Int>
-        get() = cart.productsCount
-
-    fun onAddButtonClicked(cartLine: CartLine){
-        cart.add(cartLine.product)
-    }
-    fun onRemoveButtonClicked(cartLine: CartLine) {
-        Log.i("i/MarketListViewModel","#### REMOVE PROD Cart total: ${cart.totalCost}")
-        cart.remove(cartLine.product)
-    }
+    val cartProducts= cart.productsCount
 
     init {
         _banners.value = listOf(
@@ -37,7 +30,7 @@ class MarketListViewModel : ViewModel() {
             Banner(3, "Fresh Avocado", "Product of the Month", "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/fresh-avocado-pattern-on-a-green-background-royalty-free-image-1006125552-1561647338.jpg?crop=0.60251xw:1xh;center,top&resize=980:*")
         )
 
-        _products.value = listOf(
+        _products = mutableListOf(
             Product(1, "Kiwi", Category.FRUIT,35.toBigDecimal(),"https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-fruits-over-purple-background-royalty-free-image-733479343-1536169938.jpg",""),
             Product(2, "Grapefruit", Category.VEGETABLE, 45.toBigDecimal(),"https://wiselivingmagazine.co.uk/wp-content/uploads/2020/06/Health-benefits-grapefruit-main.jpg",""),
             Product(3, "Watermelon", Category.FRUIT, 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg",""),
@@ -46,10 +39,26 @@ class MarketListViewModel : ViewModel() {
 //            Product(6, "Watermelon", Category.FRUIT, 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg","")
         )
 
-        _products.value?.map {
-            cart.addEmptyCartLine(it)
+        updateCartLines()
+    }
+
+    private fun updateCartLines(){
+        _cartLines = cart.cartLines
+
+        this._products.forEach { product ->
+            if (!cart.has(product)) {
+                _cartLines.add(CartLine(_cartLines.size, product ))
+            }
         }
     }
 
-
+    fun onAddButtonClicked(cartLine: CartLine){
+        cart.add(cartLine.product)
+        updateCartLines()
+    }
+    fun onRemoveButtonClicked(cartLine: CartLine) {
+        Log.i("i/MarketListViewModel","#### REMOVE PROD Cart total: ${cart.totalCost}")
+        cart.remove(cartLine.product)
+        updateCartLines()
+    }
 }

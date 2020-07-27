@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.MarketListFragmentBinding
+import kotlinx.android.synthetic.main.list_item_category.view.*
 import kotlinx.android.synthetic.main.list_item_product.*
 import kotlinx.android.synthetic.main.market_list_fragment.*
 
@@ -80,7 +81,7 @@ class MarketListFragment : Fragment() {
 
         marketListViewModel.cartProducts.observe(viewLifecycleOwner, Observer {
             Log.i("i/MarketListFragment","Hubo algun cambio en prodsAmount: $it")
-            productAdapter.submitProductsList(marketListViewModel.cartLines)
+            productAdapter.submitProductsList(marketListViewModel.cartLines, binding.searchBar.query.toString())
         })
 
         binding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
