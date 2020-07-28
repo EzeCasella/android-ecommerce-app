@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
@@ -84,22 +85,26 @@ class MarketListFragment : Fragment() {
             productAdapter.submitProductsList(marketListViewModel.cartLines, binding.searchBar.query.toString())
         })
 
-        binding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+        binding.searchBar.apply {
+            imeOptions = EditorInfo.IME_ACTION_DONE
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Log.i("i/MarketListFragment", "Query text changed")
-                if (newText.isNullOrEmpty()) {
-                    binding.bannerList.visibility = View.VISIBLE
-                } else {
-                    binding.bannerList.visibility = View.GONE
+            setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
                 }
-                productAdapter.filter.filter(newText)
-                return false
-            }
-        })
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    Log.i("i/MarketListFragment", "Query text changed")
+                    if (newText.isNullOrEmpty()) {
+                        binding.bannerList.visibility = View.VISIBLE
+                    } else {
+                        binding.bannerList.visibility = View.GONE
+                    }
+                    productAdapter.filter.filter(newText)
+                    return false
+                }
+            })
+        }
 
         return binding.root
     }
