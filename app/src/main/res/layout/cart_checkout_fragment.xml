@@ -34,7 +34,7 @@
         android:layout_marginStart="10dp"
         android:text="Total"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cart_total_price"
+        app:layout_constraintBaseline_toBaselineOf="@+id/cart_total_price"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
