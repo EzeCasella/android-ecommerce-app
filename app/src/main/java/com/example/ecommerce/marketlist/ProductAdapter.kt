@@ -36,13 +36,17 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
     * Here is where the products list is grouped in categories
     *
     * */
-    fun submitProductsList(list: List<CartLine>?, filterQuery: String) {
+    fun submitProductsList(list: List<CartLine>?, filterQuery: String?) {
+
+        if (cartLinesFullList.isEmpty() && list != null) {
+            cartLinesFullList = list.toList()
+        }
+
         if (filterQuery.isNullOrEmpty()) {
             adapterScope.launch {
                 var items: List<CartLineListItem> = listOf()
                 if (list != null) {
                     cartLinesList = list.toMutableList()
-                    if (cartLinesFullList.isEmpty()) cartLinesFullList = list.toList()
 
                     var filteringList: List<CartLine>
                     var rest = cartLinesList.toMutableList()
@@ -57,7 +61,9 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
                         items = items + listOf(CartLineListItem.CategoryItem(category)) +
                                 filteringList.map { CartLineListItem.CartLineItem(it) }
                     }
-                    submitList(items)
+                    withContext(Dispatchers.Main){
+                        submitList(items)
+                    }
                 }
             }
         } else {
@@ -179,12 +185,10 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
 
 class ProductDiffCallback : DiffUtil.ItemCallback<CartLineListItem>() {
     override fun areItemsTheSame(oldItem: CartLineListItem, newItem: CartLineListItem): Boolean {
-        Log.i("i/ProductAdapter","OldItem id: ${oldItem.id}, New item id: ${newItem.id}")
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: CartLineListItem, newItem: CartLineListItem): Boolean {
-        Log.i("i/ProductAdapter","OldItem amount: ${oldItem.id}, New item amount: ${newItem.id}")
         return oldItem.prodAmount == newItem.prodAmount
     }
 }

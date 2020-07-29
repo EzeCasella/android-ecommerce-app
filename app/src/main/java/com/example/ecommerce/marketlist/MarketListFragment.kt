@@ -1,10 +1,12 @@
 package com.example.ecommerce.marketlist
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
@@ -27,6 +29,7 @@ class MarketListFragment : Fragment() {
 
     companion object {
         fun newInstance() = MarketListFragment()
+        var searchBarText: String? = ""
     }
 
     private lateinit var marketListViewModel: MarketListViewModel
@@ -89,17 +92,21 @@ class MarketListFragment : Fragment() {
             Log.i("i/MarketListFragment","Hubo algun cambio en prodsAmount: $it")
             productAdapter.submitProductsList(marketListViewModel.cartLines, binding.searchBar.query.toString())
         })
+        productAdapter.submitProductsList(marketListViewModel.cartLines, searchBarText)
+        Log.i("i/MarketListFragment", "Searchabr query: ${searchBarText}")
 
         binding.searchBar.apply {
             imeOptions = EditorInfo.IME_ACTION_DONE
 
-            setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     Log.i("i/MarketListFragment", "Query text changed")
+                    Log.i("i/MarketListFragment", "searchbar text: ${newText}")
+                    searchBarText = newText
                     if (newText.isNullOrEmpty()) {
                         binding.bannerList.visibility = View.VISIBLE
                     } else {
@@ -109,6 +116,17 @@ class MarketListFragment : Fragment() {
                     return false
                 }
             })
+
+            setOnQueryTextFocusChangeListener { view, hasFocus ->
+                if (!hasFocus) {
+                    val imm =
+                        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    imm?.hideSoftInputFromWindow(view.windowToken, 0)
+                    Log.i("i/MarketListFragment", "No tiene FOCO")
+                } else {
+                    Log.i("i/MarketListFragment", "Tiene FOCO")
+                }
+            }
         }
 
         return binding.root
