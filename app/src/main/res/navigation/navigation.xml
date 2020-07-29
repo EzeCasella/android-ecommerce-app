@@ -8,6 +8,20 @@
     <fragment
         android:id="@+id/marketListFragment"
         android:name="com.example.ecommerce.marketlist.MarketListFragment"
-        android:label="market_list_fragment"
-        tools:layout="@layout/market_list_fragment" />
+        android:label="eMarket"
+        tools:layout="@layout/market_list_fragment" >
+        <action
+            android:id="@+id/action_cartCheckout"
+            app:destination="@id/cartCheckoutFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/cartCheckoutFragment"
+        android:name="com.example.ecommerce.cartcheckout.CartCheckoutFragment"
+        android:label="Cart Checkout"
+        tools:layout="@layout/cart_checkout_fragment">
+        <argument
+            android:name="cart"
+            app:argType="com.example.ecommerce.domain.Cart"/>
+    </fragment>
 </navigation>

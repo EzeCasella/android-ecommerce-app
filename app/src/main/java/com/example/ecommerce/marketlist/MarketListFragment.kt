@@ -2,18 +2,21 @@ package com.example.ecommerce.marketlist
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.MarketListFragmentBinding
 import kotlinx.android.synthetic.main.list_item_category.view.*
@@ -26,7 +29,7 @@ class MarketListFragment : Fragment() {
         fun newInstance() = MarketListFragment()
     }
 
-    private lateinit var viewModel: MarketListViewModel
+    private lateinit var marketListViewModel: MarketListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,17 +40,19 @@ class MarketListFragment : Fragment() {
             inflater, R.layout.market_list_fragment, container, false
         )
 
-        val marketListViewModel = ViewModelProvider(this).get(MarketListViewModel::class.java)
+        setHasOptionsMenu(true)
+
+        marketListViewModel = ViewModelProvider(this).get(MarketListViewModel::class.java)
 
         binding.marketListViewModel = marketListViewModel
 
         binding.lifecycleOwner = this
-
         /*
         * Banners list setup
         * */
         val bannerLayoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
         binding.bannerList.layoutManager = bannerLayoutManager
+        LinearSnapHelper().attachToRecyclerView(binding.bannerList)
 
         val bannerAdapter = BannerAdapter()
         binding.bannerList.adapter = bannerAdapter
@@ -99,14 +104,30 @@ class MarketListFragment : Fragment() {
                         binding.bannerList.visibility = View.VISIBLE
                     } else {
                         binding.bannerList.visibility = View.GONE
+                        productAdapter.filter.filter(newText)
                     }
-                    productAdapter.filter.filter(newText)
                     return false
                 }
             })
         }
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.marketlist_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return NavigationUI.onNavDestinationSelected(item,
+//            requireView().findNavController())
+//                || super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.cartCheckoutFragment ->
+                this.findNavController().navigate(MarketListFragmentDirections.actionCartCheckout(marketListViewModel.cart))
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

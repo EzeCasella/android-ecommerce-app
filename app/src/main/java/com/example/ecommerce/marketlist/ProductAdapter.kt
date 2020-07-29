@@ -179,10 +179,12 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
 
 class ProductDiffCallback : DiffUtil.ItemCallback<CartLineListItem>() {
     override fun areItemsTheSame(oldItem: CartLineListItem, newItem: CartLineListItem): Boolean {
+        Log.i("i/ProductAdapter","OldItem id: ${oldItem.id}, New item id: ${newItem.id}")
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: CartLineListItem, newItem: CartLineListItem): Boolean {
+        Log.i("i/ProductAdapter","OldItem amount: ${oldItem.id}, New item amount: ${newItem.id}")
         return oldItem.prodAmount == newItem.prodAmount
     }
 }

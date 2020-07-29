@@ -1,15 +1,18 @@
 package com.example.ecommerce.domain
 
+import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 
 enum class Category {
     FRUIT, VEGETABLE
 }
 
-class Cart() {
+@Parcelize
+class Cart(): Parcelable {
 
     var checkedOut: Boolean = false
     val cartLines = mutableListOf<CartLine>()
@@ -28,14 +31,6 @@ class Cart() {
 
     private var cartLineId = 0
 
-    fun addEmptyCartLine(product: Product) {
-        val cartLine = cartLines.find { it.product.id == product.id }
-
-        if (cartLine == null) {
-            val newCartLine = CartLine(cartLineId++, product)
-            cartLines.add(newCartLine)
-        }
-    }
     fun add(product: Product) {
         val cartLine = cartLines.find { it.product.id == product.id }
 
@@ -74,19 +69,21 @@ data class CartLine(
     val product: Product
 ) {
 
-    var prodAmount = 0
+    private var _prodAmount = 0
+    val prodAmount
+        get() = _prodAmount
     var total: BigDecimal = 0.toBigDecimal()
     init {
-        prodAmount = 0
+        _prodAmount = 0
     }
 
     fun addProduct() {
-        prodAmount++
+        _prodAmount++
         total += product.price
     }
 
     fun removeProduct() {
-        prodAmount--
+        _prodAmount--
         total -= product.price
     }
 }

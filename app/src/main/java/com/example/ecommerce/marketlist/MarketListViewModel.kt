@@ -15,7 +15,7 @@ class MarketListViewModel : ViewModel() {
 
     private var _products = mutableListOf<Product>()
 
-    private val cart = Cart()
+    val cart = Cart()
 
     private lateinit var _cartLines: MutableList<CartLine>
     val cartLines: List<CartLine>
@@ -39,26 +39,24 @@ class MarketListViewModel : ViewModel() {
 //            Product(6, "Watermelon", Category.FRUIT, 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg","")
         )
 
-        updateCartLines()
+        setupCartLines()
     }
 
-    private fun updateCartLines(){
-        _cartLines = cart.cartLines
+    private fun setupCartLines(){
+        _cartLines = mutableListOf<CartLine>()
 
         this._products.forEach { product ->
-            if (!cart.has(product)) {
-                _cartLines.add(CartLine(_cartLines.size, product ))
-            }
+            _cartLines.add(CartLine(_cartLines.size, product ))
         }
     }
 
     fun onAddButtonClicked(cartLine: CartLine){
+        _cartLines.find { it.id == cartLine.id }?.addProduct()
         cart.add(cartLine.product)
-        updateCartLines()
     }
     fun onRemoveButtonClicked(cartLine: CartLine) {
         Log.i("i/MarketListViewModel","#### REMOVE PROD Cart total: ${cart.totalCost}")
+        _cartLines.find { it.id == cartLine.id }?.removeProduct()
         cart.remove(cartLine.product)
-        updateCartLines()
     }
 }
