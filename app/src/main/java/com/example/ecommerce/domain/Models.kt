@@ -4,6 +4,7 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 
@@ -91,10 +92,9 @@ data class CartLine(
 data class Product(
     val id: Int,
     val name: String,
-    val category: Category,
+    val category: String,
     val price: BigDecimal,
-    val unitImgURL: String,
-    val bundleImgURL: String
+    @Json(name = "photoUrl") val unitImgURL: String
 )
 
 data class Banner(

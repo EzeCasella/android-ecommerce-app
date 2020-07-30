@@ -50,7 +50,7 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
 
                     var filteringList: List<CartLine>
                     var rest = cartLinesList.toMutableList()
-                    var category: Category
+                    var category: String
 
                     while (rest.isNotEmpty()) {
                         category = rest.first().product.category
@@ -88,7 +88,7 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
             }
             is TextViewHolder -> {
                 val categoryItem = getItem(position) as CartLineListItem.CategoryItem
-                holder.bind(categoryItem.category.name)
+                holder.bind(categoryItem.category)
             }
         }
     }
@@ -161,7 +161,7 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
 
                 for (item in cartLinesFullList) {
                     if (item.product.name.toLowerCase().contains(filterPattern) ||
-                            item.product.category.toString().toLowerCase().contains(filterPattern))
+                            item.product.category.toLowerCase().contains(filterPattern))
                         filteredList.add(item)
                 }
             }
@@ -204,7 +204,7 @@ sealed class CartLineListItem {
 
     }
 
-    data class CategoryItem(val category: Category) : CartLineListItem() {
+    data class CategoryItem(val category: String) : CartLineListItem() {
         override val id = Int.MIN_VALUE
         override val prodAmount = Int.MIN_VALUE
     }
