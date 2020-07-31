@@ -81,18 +81,18 @@ class MarketListFragment : Fragment() {
         })
         binding.productsList.adapter = productAdapter
 
-//        marketListViewModel.cartLines.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                Log.i("i/MarketListFragment","Hubo algun cambio")
-//                productAdapter.submitProductsList(it.toList())
-//            }
-//        })
+        marketListViewModel.cartLines.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                Log.i("i/MarketListFragment","Hubo algun cambio")
+                productAdapter.submitProductsList(it, searchBarText)
+            }
+        })
 
         marketListViewModel.cartProducts.observe(viewLifecycleOwner, Observer {
             Log.i("i/MarketListFragment","Hubo algun cambio en prodsAmount: $it")
-            productAdapter.submitProductsList(marketListViewModel.cartLines, binding.searchBar.query.toString())
+            productAdapter.submitProductsList(marketListViewModel.cartLines.value, binding.searchBar.query.toString())
         })
-        productAdapter.submitProductsList(marketListViewModel.cartLines, searchBarText)
+        productAdapter.submitProductsList(marketListViewModel.cartLines.value, searchBarText)
         Log.i("i/MarketListFragment", "Searchabr query: ${searchBarText}")
 
         binding.searchBar.apply {

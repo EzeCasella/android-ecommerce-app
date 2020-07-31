@@ -17,8 +17,8 @@ class MarketListViewModel : ViewModel() {
 
     val cart = Cart()
 
-    private lateinit var _cartLines: MutableList<CartLine>
-    val cartLines: List<CartLine>
+    private var _cartLines = MutableLiveData<List<CartLine>>()
+    val cartLines: LiveData<List<CartLine>>
         get() = _cartLines
 
     val cartProducts= cart.productsCount
@@ -41,24 +41,22 @@ class MarketListViewModel : ViewModel() {
 ////            Product(6, "Watermelon", "Fruit", 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg","")
 //        )
         getProducts()
-        setupCartLines()
     }
 
     private fun setupCartLines(){
-        _cartLines = mutableListOf<CartLine>()
-
-//        this._products.forEach { product ->
-//            _cartLines.add(CartLine(_cartLines.size, product ))
-//        }
+        _cartLines.value = listOf()
+        this._products.forEach { product ->
+            _cartLines.value = (_cartLines.value?.plus((CartLine(_cartLines.value!!.size, product ))))?.toList()
+        }
     }
 
     fun onAddButtonClicked(cartLine: CartLine){
-        _cartLines.find { it.id == cartLine.id }?.addProduct()
+        _cartLines.value?.find { it.id == cartLine.id }?.addProduct()
         cart.add(cartLine.product)
     }
     fun onRemoveButtonClicked(cartLine: CartLine) {
         Log.i("i/MarketListViewModel","#### REMOVE PROD Cart total: ${cart.totalCost}")
-        _cartLines.find { it.id == cartLine.id }?.removeProduct()
+        _cartLines.value?.find { it.id == cartLine.id }?.removeProduct()
         cart.remove(cartLine.product)
     }
 //
@@ -70,16 +68,18 @@ class MarketListViewModel : ViewModel() {
 
     private fun getProducts() {
         Log.i("i/MarketListViewModel","Inside getProducts")
-        viewModelScope.launch {
-            var response = productsRepo.getAll()
-            _products = response
-        }
-//        viewModelScope.fetch({
-//            productsRepo.getAll()
-//        },{
-//            _products = it
-//        },{
-//            Log.i("i/MarketListViewModel","La exception es: $it")
-//        })
+//        viewModelScope.launch {
+//            var response = productsRepo.getAll()
+//            _products = response
+//            setupCartLines()
+//        }
+        viewModelScope.fetch({
+            productsRepo.getAll()
+        },{
+            _products = it
+            setupCartLines()
+        },{
+            Log.i("i/MarketListViewModel","La exception es: $it")
+        })
     }
 }

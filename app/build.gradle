@@ -79,7 +79,7 @@ dependencies {
 
 
     // Coroutines
-    def version_kotlin_coroutines = "1.3.8"
+    def version_kotlin_coroutines = "1.3.6"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
 

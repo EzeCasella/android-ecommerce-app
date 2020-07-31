@@ -94,7 +94,7 @@ data class Product(
     val name: String,
     val category: String,
     val price: BigDecimal,
-    @Json(name = "photoUrl") val unitImgURL: String
+    @Json(name = "photoUrl") val unitImgURL: String?
 )
 
 data class Banner(
