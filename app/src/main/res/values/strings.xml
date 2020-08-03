@@ -4,4 +4,5 @@
     <string name="display_price_0precision">$%,.0f</string>
     <string name="display_price_2precision">$%,.2f</string>
     <string name="saved_token_key">token_key</string>
+    <string name="zero_products_alert">You need to add a product to the cart first.</string>
 </resources>

@@ -1,9 +1,11 @@
 package com.example.ecommerce.cartcheckout
 
+import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.R
@@ -78,4 +80,38 @@ sealed class CheckoutLineListItem {
         override val id = cartLine.id
     }
     abstract val id: Int
+}
+
+class ItemDecorationCheckoutColumns(private val spacing: Int) : RecyclerView.ItemDecoration() {
+
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        val position = parent.getChildAdapterPosition(view)
+        val totalSpanCount = getTotalSpanCount(parent)
+
+        outRect.top = if (!isInTheFirstRow(position, totalSpanCount)) spacing else 0
+        outRect.right = if (isFirstInRow(position, totalSpanCount)) spacing else 0
+        outRect.left = if (isLastInRow(position, totalSpanCount)) spacing else 0
+    }
+
+    private fun getTotalSpanCount(parent: RecyclerView): Int {
+        val layoutManager = parent.layoutManager as GridLayoutManager
+        return layoutManager.spanCount
+    }
+
+    private fun isInTheFirstRow(position: Int, spanCount: Int): Boolean {
+        return position < spanCount
+    }
+
+    private fun isFirstInRow(position: Int, spanCount: Int): Boolean {
+        return position % spanCount == 0
+    }
+
+    private fun isLastInRow(position: Int, spanCount: Int): Boolean {
+        return isFirstInRow(position + 1, spanCount)
+    }
 }

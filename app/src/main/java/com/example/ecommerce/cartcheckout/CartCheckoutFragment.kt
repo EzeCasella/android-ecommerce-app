@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -32,6 +33,8 @@ class CartCheckoutFragment(): Fragment(){
 
         cart_lines_list?.layoutManager = GridLayoutManager(context, 2)
 
+        cart_lines_list.addItemDecoration(ItemDecorationCheckoutColumns(20))
+
         val adapter = CheckoutLineAdapter()
         cart_lines_list?.adapter = adapter
 
@@ -39,12 +42,23 @@ class CartCheckoutFragment(): Fragment(){
 
         cart_total_price.text = getString(R.string.display_price_2precision, cart.totalCost)
 
-        checkout_button.setOnClickListener {
-            val token = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(getString(R.string.saved_token_key), null)
-            if (token != null) {
-                cartCheckoutViewModel.onCheckoutClick(cart, token)
+        checkout_button.let {
+            if (cart.productsCount.value == 0) {
+                // Button greyed as disabled
+                it.setBackgroundResource(R.drawable.radius_solid_grey)
+                it.setOnClickListener {
+                    Toast.makeText(context, getString(R.string.zero_products_alert), Toast.LENGTH_LONG).show()
+                }
             } else {
+                it.setBackgroundResource(R.drawable.radius_solid_primary)
+                it.setOnClickListener {
+                    val token = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(getString(R.string.saved_token_key), null)
+                    if (token != null) {
+                        cartCheckoutViewModel.onCheckoutClick(cart, token)
+                    } else {
 //                TODO() Implement null token behaviour
+                    }
+                }
             }
         }
     }
