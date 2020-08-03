@@ -1,6 +1,5 @@
 package com.example.ecommerce.data.api
 
-import com.example.ecommerce.domain.Cart
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson

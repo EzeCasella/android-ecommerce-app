@@ -21,8 +21,8 @@ class ProductsRepositoryImpl : ProductsRepository {
         return client.products()
     }
 
-    suspend fun checkoutCart(cart: Cart): ResponseBody {
-        return client.checkoutCart(cart)
+    suspend fun checkoutCart(cart: Cart, token: String): ResponseBody {
+        return client.checkoutCart(cart, token)
     }
 
 }

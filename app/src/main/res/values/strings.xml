@@ -3,4 +3,5 @@
     <string name="searchbar_placeholder">Search</string>
     <string name="display_price_0precision">$%,.0f</string>
     <string name="display_price_2precision">$%,.2f</string>
+    <string name="saved_token_key">token_key</string>
 </resources>

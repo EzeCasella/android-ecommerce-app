@@ -14,9 +14,9 @@ class CartCheckoutViewModel() : ViewModel() {
 
     }
 
-    fun onCheckoutClick(cart: Cart){
+    fun onCheckoutClick(cart: Cart, token: String){
         viewModelScope.launch {
-            val response = productsRepo.checkoutCart(cart)
+            val response = productsRepo.checkoutCart(cart, token)
 
 
             Log.i("i/CartCheckoutViewModel","La respuesta del post es: ${response.string()}")

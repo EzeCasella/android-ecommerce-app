@@ -1,5 +1,6 @@
 package com.example.ecommerce.cartcheckout
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -39,7 +40,12 @@ class CartCheckoutFragment(): Fragment(){
         cart_total_price.text = getString(R.string.display_price_2precision, cart.totalCost)
 
         checkout_button.setOnClickListener {
-            cartCheckoutViewModel.onCheckoutClick(cart)
+            val token = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(getString(R.string.saved_token_key), null)
+            if (token != null) {
+                cartCheckoutViewModel.onCheckoutClick(cart, token)
+            } else {
+//                TODO() Implement null token behaviour
+            }
         }
     }
 }
