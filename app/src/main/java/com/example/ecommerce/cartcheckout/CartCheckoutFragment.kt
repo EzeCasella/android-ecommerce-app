@@ -6,13 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.R
 import kotlinx.android.synthetic.main.cart_checkout_fragment.*
 
 class CartCheckoutFragment(): Fragment(){
+
+    private lateinit var cartCheckoutViewModel: CartCheckoutViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        cartCheckoutViewModel = ViewModelProvider(this).get(CartCheckoutViewModel::class.java)
 
         return inflater.inflate(R.layout.cart_checkout_fragment, container, false)
     }
@@ -31,5 +37,9 @@ class CartCheckoutFragment(): Fragment(){
         adapter.submitCartlines(cart.cartLines)
 
         cart_total_price.text = getString(R.string.display_price_2precision, cart.totalCost)
+
+        checkout_button.setOnClickListener {
+            cartCheckoutViewModel.onCheckoutClick(cart)
+        }
     }
 }
