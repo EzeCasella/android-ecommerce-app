@@ -1,22 +1,23 @@
 package com.example.ecommerce.marketlist
 
-import android.util.Log
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.ecommerce.R
-import com.example.ecommerce.domain.Banner
 
 @BindingAdapter("imageUrl")
 fun ImageView.setImage(imgUrl: String?) {
+
     imgUrl?.let {
         val imgUri = it.toUri().buildUpon().scheme("https").build()
         Glide.with(this.context)
             .load(imgUri)
 //            .apply(RequestOptions().placeholder("image placeholder"))
             .into(this)
+    } ?: kotlin.run {
+//        setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_broken_image_24))
+        setImageResource(R.drawable.ic_baseline_broken_image_24)
     }
 }
 //private var setImageCalls = 0
