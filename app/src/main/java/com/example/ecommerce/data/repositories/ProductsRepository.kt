@@ -1,6 +1,7 @@
 package com.example.ecommerce.data.repositories
 
 import android.util.Log
+import com.example.ecommerce.data.api.models.Purchase
 import com.example.ecommerce.data.api.products.ProductsAPIClient
 import com.example.ecommerce.domain.Cart
 import com.example.ecommerce.domain.Product
@@ -25,4 +26,7 @@ class ProductsRepositoryImpl : ProductsRepository {
         return client.checkoutCart(cart, token)
     }
 
+    suspend fun purchases(token: String): List<Purchase> {
+        return client.purchases(token)
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.ecommerce.data.api.products
 
 import com.example.ecommerce.data.api.models.CheckoutRequest
+import com.example.ecommerce.data.api.models.Purchase
 import com.example.ecommerce.domain.Product
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -17,4 +18,8 @@ interface ProductsService {
         @Body checkoutRequest: CheckoutRequest)
             : ResponseBody
 
+    @GET("purchases")
+    suspend fun purchases(
+        @Header("Authorization") token: String)
+            : List<Purchase>
 }

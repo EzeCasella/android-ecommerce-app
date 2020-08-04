@@ -129,6 +129,11 @@ class MarketListFragment : Fragment() {
             }
         }
 
+        val token = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(getString(R.string.saved_token_key), null)
+        if (token != null) {
+            marketListViewModel.fetchPurchases(token)
+        }
+
         return binding.root
     }
 

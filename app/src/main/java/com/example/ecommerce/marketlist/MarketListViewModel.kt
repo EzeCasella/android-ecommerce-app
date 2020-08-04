@@ -82,4 +82,15 @@ class MarketListViewModel : ViewModel() {
             Log.i("i/MarketListViewModel","La exception es: $it")
         })
     }
+
+    fun fetchPurchases(token: String) {
+        viewModelScope.fetch({
+            productsRepo.purchases(token)
+        },{
+            Log.i("i/MarketListViewModel","Cantidad de purchases: ${it[0].date}")
+        },{
+            Log.i("i/MarketListViewModel","Hubo un error: $it")
+
+        })
+    }
 }

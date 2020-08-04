@@ -18,4 +18,5 @@ object ProductsAPIClient {
 
     suspend fun checkoutCart(cart: Cart, token: String) = service.checkoutCart( token, cart.toCheckoutRequest())
 
+    suspend fun purchases(token: String) = service.purchases( token )
 }

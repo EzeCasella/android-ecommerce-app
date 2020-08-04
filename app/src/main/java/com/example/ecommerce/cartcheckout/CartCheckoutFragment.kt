@@ -57,6 +57,8 @@ class CartCheckoutFragment(): Fragment(){
                         cartCheckoutViewModel.onCheckoutClick(cart, token)
                     } else {
 //                TODO() Implement null token behaviour
+//                        Refresh token
+//                        Pop error
                     }
                 }
             }
