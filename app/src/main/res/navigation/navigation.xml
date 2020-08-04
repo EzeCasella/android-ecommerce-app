@@ -12,9 +12,7 @@
 
         <action
             android:id="@+id/action_loginFragment_to_marketListFragment"
-            app:destination="@id/marketListFragment"
-            app:popUpTo="@id/navigation"
-            app:popUpToInclusive="true" />
+            app:destination="@id/marketListFragment" />
     </fragment>
 
     <fragment
