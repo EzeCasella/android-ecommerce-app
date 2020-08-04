@@ -63,6 +63,12 @@ class Cart(): Parcelable {
         val cartLine = cartLines.find { it.product.id == product.id }
         return cartLine != null
     }
+
+    fun empty(){
+        cartLines.clear()
+        _productsCount.value = 0
+        cartLineId = 0
+    }
 }
 
 data class CartLine(

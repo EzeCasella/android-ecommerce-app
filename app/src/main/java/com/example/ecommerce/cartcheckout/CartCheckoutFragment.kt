@@ -54,7 +54,7 @@ class CartCheckoutFragment(): Fragment(){
                 it.setOnClickListener {
                     val token = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(getString(R.string.saved_token_key), null)
                     if (token != null) {
-                        cartCheckoutViewModel.onCheckoutClick(cart, token)
+                        cartCheckoutViewModel.onCheckoutClick(cart, token, this)
                     } else {
 //                TODO() Implement null token behaviour
 //                        Refresh token
