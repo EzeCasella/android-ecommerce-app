@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.marketListFragment
             ))
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Shutting AppBar overlay shadow
+        supportActionBar?.elevation = 0F
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/marketListFragment"
         android:name="com.example.ecommerce.marketlist.MarketListFragment"
-        android:label="eMarket"
+        android:label=""
         tools:layout="@layout/market_list_fragment" >
         <action
             android:id="@+id/action_cartCheckout"
