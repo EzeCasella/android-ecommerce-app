@@ -98,9 +98,8 @@ data class Product(
 )
 
 data class Banner(
-    val id: Int,
-    val title: String,
+    @Json(name = "name") val title: String,
     val description: String,
-    val imgURL: String
+    @Json(name = "photoUrl")val imgURL: String
 //                    , TODO("Product related")
 )

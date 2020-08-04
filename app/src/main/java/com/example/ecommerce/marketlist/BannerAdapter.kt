@@ -62,7 +62,7 @@ class BannerAdapter(/* */): ListAdapter<BannerItem, RecyclerView.ViewHolder>(Ban
 
 class BannerDiffCallback : DiffUtil.ItemCallback<BannerItem>() {
     override fun areItemsTheSame(oldItem: BannerItem, newItem: BannerItem): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.title == newItem.title
     }
 
     override fun areContentsTheSame(oldItem: BannerItem, newItem: BannerItem): Boolean {
@@ -72,8 +72,8 @@ class BannerDiffCallback : DiffUtil.ItemCallback<BannerItem>() {
 
 sealed class BannerItem() {
     data class DataClass(val banner: Banner): BannerItem(){
-        override val id = banner.id
+        override val title = banner.title
     }
 
-    abstract val id: Int
+    abstract val title: String
 }

@@ -25,21 +25,7 @@ class MarketListViewModel : ViewModel() {
     private val productsRepo = ProductsRepositoryImpl()
 
     init {
-
-        _banners.value = listOf(
-            Banner(1, "Brazilian Bananas", "Product of the Day", "https://pbs.twimg.com/media/DrjlDZnX0AAK8xJ.jpg"),
-            Banner(2, "Kiwi", "Product of the Week", "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-fruits-over-purple-background-royalty-free-image-733479343-1536169938.jpg"),
-            Banner(3, "Fresh Avocado", "Product of the Month", "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/fresh-avocado-pattern-on-a-green-background-royalty-free-image-1006125552-1561647338.jpg?crop=0.60251xw:1xh;center,top&resize=980:*")
-        )
-
-//        _products = mutableListOf(
-//            Product(1, "Kiwi", "Fruit",35.toBigDecimal(),"https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-fruits-over-purple-background-royalty-free-image-733479343-1536169938.jpg"),
-//            Product(2, "Grapefruit", "Vegetable", 45.toBigDecimal(),"https://wiselivingmagazine.co.uk/wp-content/uploads/2020/06/Health-benefits-grapefruit-main.jpg"),
-//            Product(3, "Watermelon", "Fruit", 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg"),
-//            Product(4, "Kiwi", "Vegetable",35.toBigDecimal(),"https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-fruits-over-purple-background-royalty-free-image-733479343-1536169938.jpg"),
-//            Product(5, "Grapefruit", "Vegetable", 45.toBigDecimal(),"https://wiselivingmagazine.co.uk/wp-content/uploads/2020/06/Health-benefits-grapefruit-main.jpg")
-////            Product(6, "Watermelon", "Fruit", 45.toBigDecimal(),"https://img.etimg.com/photo/msid-69534798,quality-100/watermelons1.jpg","")
-//        )
+        getPromos()
         getProducts()
     }
 
@@ -66,6 +52,19 @@ class MarketListViewModel : ViewModel() {
 //    // the Coroutine runs using the Main (UI) dispatcher
 //    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    private fun getPromos() {
+        viewModelScope.fetch(
+            {
+                productsRepo.getPromos()
+            },{
+                _banners.value = it
+            },{
+            //TODO: Proper exception handling
+                Log.i("i/MarketListViewModel","Exception: $it")
+            }
+        )
+    }
+
     private fun getProducts() {
         Log.i("i/MarketListViewModel","Inside getProducts")
 //        viewModelScope.launch {
@@ -79,6 +78,7 @@ class MarketListViewModel : ViewModel() {
             _products = it
             setupCartLines()
         },{
+//            TODO: Proper exception handling
             Log.i("i/MarketListViewModel","La exception es: $it")
         })
     }

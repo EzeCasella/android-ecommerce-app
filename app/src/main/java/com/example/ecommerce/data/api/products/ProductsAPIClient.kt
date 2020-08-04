@@ -2,6 +2,7 @@ package com.example.ecommerce.data.api.products
 
 import com.example.ecommerce.data.api.RetrofitClient
 import com.example.ecommerce.data.api.models.toCheckoutRequest
+import com.example.ecommerce.domain.Banner
 import com.example.ecommerce.domain.Cart
 import com.example.ecommerce.domain.Product
 
@@ -15,6 +16,8 @@ object ProductsAPIClient {
         .create(ProductsService::class.java)
 
     suspend fun products(): List<Product> = service.products()
+
+    suspend fun promos(): List<Banner> = service.promos()
 
     suspend fun checkoutCart(cart: Cart, token: String) = service.checkoutCart( token, cart.toCheckoutRequest())
 
