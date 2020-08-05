@@ -20,6 +20,13 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        return inflater.inflate(R.layout.login_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         loginViewModel.mustSetToken.observe(viewLifecycleOwner, Observer {mustSetToken ->
@@ -33,7 +40,5 @@ class LoginFragment : Fragment() {
                 this.findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMarketListFragment())
             }
         })
-
-        return inflater.inflate(R.layout.login_fragment, container, false)
     }
 }
