@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.R
+import com.example.ecommerce.common.application.EMarketApplication
 import kotlinx.android.synthetic.main.cart_checkout_fragment.*
 
 class CartCheckoutFragment() : Fragment() {
@@ -76,10 +77,15 @@ class CartCheckoutFragment() : Fragment() {
         }
 
         cartCheckoutViewModel.cartCheckedOut.observe(viewLifecycleOwner, Observer {
-            if (it) {
+            if (it != null) {
                 checkout_progressBar.visibility = View.INVISIBLE
-                checkout_button.visibility = View.VISIBLE
                 cartCheckoutViewModel.onCheckoutComplete()
+                Toast.makeText(
+                    EMarketApplication.getAppContext(),
+                    it,
+                    Toast.LENGTH_LONG
+                ).show()
+
                 findNavController().navigateUp()
             }
         })
