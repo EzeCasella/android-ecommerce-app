@@ -15,12 +15,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.R
 import kotlinx.android.synthetic.main.cart_checkout_fragment.*
 
-class CartCheckoutFragment(): Fragment(){
+class CartCheckoutFragment() : Fragment() {
 
     private lateinit var cartCheckoutViewModel: CartCheckoutViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         cartCheckoutViewModel = ViewModelProvider(this).get(CartCheckoutViewModel::class.java)
 
@@ -33,7 +35,7 @@ class CartCheckoutFragment(): Fragment(){
             requireArguments()
         ).cart
 
-        Log.i("i/CartCheckoutFragment","Cart prods: ${cart.productsCount.value}")
+        Log.i("i/CartCheckoutFragment", "Cart prods: ${cart.productsCount.value}")
 
         cart_lines_list?.apply {
             layoutManager = GridLayoutManager(context, 2)
@@ -57,11 +59,17 @@ class CartCheckoutFragment(): Fragment(){
                 // Button greyed as disabled
                 it.setBackgroundResource(R.drawable.radius_solid_grey)
                 it.setOnClickListener {
-                    Toast.makeText(context, getString(R.string.zero_products_alert), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        getString(R.string.zero_products_alert),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } else {
                 it.setBackgroundResource(R.drawable.radius_solid_primary)
                 it.setOnClickListener {
+                    checkout_button.visibility = View.INVISIBLE
+                    checkout_progressBar.visibility = View.VISIBLE
                     cartCheckoutViewModel.onCheckoutClick(cart)
                 }
             }
@@ -69,6 +77,8 @@ class CartCheckoutFragment(): Fragment(){
 
         cartCheckoutViewModel.cartCheckedOut.observe(viewLifecycleOwner, Observer {
             if (it) {
+                checkout_progressBar.visibility = View.INVISIBLE
+                checkout_button.visibility = View.VISIBLE
                 cartCheckoutViewModel.onCheckoutComplete()
                 findNavController().navigateUp()
             }
