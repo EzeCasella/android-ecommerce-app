@@ -1,6 +1,6 @@
 package com.example.ecommerce.data.api.models
 
-import com.example.ecommerce.domain.Product
+import com.example.ecommerce.data.domain.Product
 import com.squareup.moshi.Json
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

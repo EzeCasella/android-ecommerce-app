@@ -1,15 +1,15 @@
-package com.example.ecommerce.cartcheckout
+package com.example.ecommerce.presentation.cartcheckout
 
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ecommerce.MyApplication
+import com.example.ecommerce.common.application.EMarketApplication
 import com.example.ecommerce.R
 import com.example.ecommerce.common.utils.fetch
 import com.example.ecommerce.data.repositories.ProductsRepositoryImpl
-import com.example.ecommerce.domain.Cart
+import com.example.ecommerce.data.domain.Cart
 
 class CartCheckoutViewModel() : ViewModel() {
     private val productsRepo = ProductsRepositoryImpl()
@@ -23,7 +23,7 @@ class CartCheckoutViewModel() : ViewModel() {
             productsRepo.checkoutCart(cart, token)
         }, {
             Toast.makeText(
-                MyApplication.getAppContext(),
+                EMarketApplication.getAppContext(),
                 it.string(),
                 Toast.LENGTH_LONG)
                 .show()
@@ -31,7 +31,7 @@ class CartCheckoutViewModel() : ViewModel() {
             _cartCheckedOut.value = true
         }, {
             Toast.makeText(
-                MyApplication.getAppContext(),
+                EMarketApplication.getAppContext(),
                 R.string.failed_checkout_alert,
                 Toast.LENGTH_LONG)
                 .show()

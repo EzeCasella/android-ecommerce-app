@@ -3,9 +3,9 @@ package com.example.ecommerce.data.repositories
 import android.util.Log
 import com.example.ecommerce.data.api.models.Purchase
 import com.example.ecommerce.data.api.products.ProductsAPIClient
-import com.example.ecommerce.domain.Banner
-import com.example.ecommerce.domain.Cart
-import com.example.ecommerce.domain.Product
+import com.example.ecommerce.data.domain.Banner
+import com.example.ecommerce.data.domain.Cart
+import com.example.ecommerce.data.domain.Product
 import okhttp3.ResponseBody
 
 interface ProductsRepository {

@@ -1,4 +1,4 @@
-package com.example.ecommerce.marketlist
+package com.example.ecommerce.presentation.marketlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -1,4 +1,4 @@
-package com.example.ecommerce.marketlist
+package com.example.ecommerce.presentation.marketlist
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,11 +11,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.ListItemProductBinding
-import com.example.ecommerce.domain.CartLine
-import com.example.ecommerce.domain.Category
-import com.example.ecommerce.domain.Product
+import com.example.ecommerce.data.domain.CartLine
 import kotlinx.android.synthetic.main.list_item_category.view.*
-import kotlinx.android.synthetic.main.list_item_product.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +22,9 @@ private val ITEM_VIEW_TYPE_CATEGORY = 0
 private val ITEM_VIEW_TYPE_CARTLINE = 1
 
 class CartLineAdapter(val addClickListener: CartLineListener, val removeClickListener: CartLineListener) :
-    ListAdapter<CartLineListItem, RecyclerView.ViewHolder>(ProductDiffCallback()), Filterable {
+    ListAdapter<CartLineListItem, RecyclerView.ViewHolder>(
+        ProductDiffCallback()
+    ), Filterable {
 
     private var cartLinesList: MutableList<CartLine> = mutableListOf()
     private var cartLinesFullList: List<CartLine> = listOf()
@@ -58,8 +57,16 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
                         rest.removeIf {
                             filteringList.contains(it)
                         }
-                        items = items + listOf(CartLineListItem.CategoryItem(category)) +
-                                filteringList.map { CartLineListItem.CartLineItem(it) }
+                        items = items + listOf(
+                            CartLineListItem.CategoryItem(
+                                category
+                            )
+                        ) +
+                                filteringList.map {
+                                    CartLineListItem.CartLineItem(
+                                        it
+                                    )
+                                }
                     }
                     withContext(Dispatchers.Main){
                         submitList(items)
@@ -74,8 +81,12 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
 //            ITEM_VIEW_TYPE_CATEGORY -> TextViewHolder
-            ITEM_VIEW_TYPE_CARTLINE -> ViewHolder.from(parent)
-            ITEM_VIEW_TYPE_CATEGORY -> TextViewHolder.from(parent)
+            ITEM_VIEW_TYPE_CARTLINE -> ViewHolder.from(
+                parent
+            )
+            ITEM_VIEW_TYPE_CATEGORY -> TextViewHolder.from(
+                parent
+            )
             else -> throw ClassCastException("Unknown viewType ${viewType}")
         }
     }
@@ -109,7 +120,9 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
             fun from(parent: ViewGroup): TextViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.list_item_category, parent, false)
-                return TextViewHolder(view)
+                return TextViewHolder(
+                    view
+                )
             }
         }
     }
@@ -117,7 +130,7 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
     class ViewHolder private constructor(val binding: ListItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(addClickListener: CartLineListener, removeClickListener: CartLineListener,item: CartLine) {
+        fun bind(addClickListener: CartLineListener, removeClickListener: CartLineListener, item: CartLine) {
             binding.cartLine = item
             binding.addClickListener = addClickListener
             binding.removeClickListener = removeClickListener
@@ -139,7 +152,9 @@ class CartLineAdapter(val addClickListener: CartLineListener, val removeClickLis
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemProductBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                return ViewHolder(
+                    binding
+                )
             }
         }
     }

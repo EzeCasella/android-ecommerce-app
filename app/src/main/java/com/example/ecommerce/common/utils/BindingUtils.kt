@@ -1,4 +1,4 @@
-package com.example.ecommerce.marketlist
+package com.example.ecommerce.common.utils
 
 import android.widget.ImageView
 import androidx.core.net.toUri

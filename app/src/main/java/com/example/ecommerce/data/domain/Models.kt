@@ -1,4 +1,4 @@
-package com.example.ecommerce.domain
+package com.example.ecommerce.data.domain
 
 import android.os.Parcelable
 import android.util.Log
@@ -41,7 +41,8 @@ class Cart(): Parcelable {
         if (cartLine != null) {
             cartLine.addProduct()
         } else {
-            val newCartLine = CartLine(cartLineId++, product)
+            val newCartLine =
+                CartLine(cartLineId++, product)
             newCartLine.addProduct()
             cartLines.add(newCartLine)
         }

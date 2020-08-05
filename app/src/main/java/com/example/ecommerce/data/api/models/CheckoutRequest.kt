@@ -1,6 +1,6 @@
 package com.example.ecommerce.data.api.models
 
-import com.example.ecommerce.domain.Cart
+import com.example.ecommerce.data.domain.Cart
 
 data class CheckoutLine (
     val product_id: Int,

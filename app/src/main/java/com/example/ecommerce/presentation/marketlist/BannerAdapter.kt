@@ -1,4 +1,4 @@
-package com.example.ecommerce.marketlist
+package com.example.ecommerce.presentation.marketlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,19 +6,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.databinding.ListItemBannerBinding
-import com.example.ecommerce.domain.Banner
+import com.example.ecommerce.data.domain.Banner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BannerAdapter(/* */): ListAdapter<BannerItem, RecyclerView.ViewHolder>(BannerDiffCallback()) {
+class BannerAdapter(/* */): ListAdapter<BannerItem, RecyclerView.ViewHolder>(
+    BannerDiffCallback()
+) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun submitBannerList(list: List<Banner>?) {
         adapterScope.launch {
-            val items = list?.map { BannerItem.DataClass(it)}
+            val items = list?.map {
+                BannerItem.DataClass(
+                    it
+                )
+            }
             withContext(Dispatchers.Main) {
                 submitList(items)
             }
@@ -29,7 +35,9 @@ class BannerAdapter(/* */): ListAdapter<BannerItem, RecyclerView.ViewHolder>(Ban
     private var viewHolderAmount = 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         viewHolderAmount++
-        return ViewHolder.from(parent)
+        return ViewHolder.from(
+            parent
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -54,7 +62,9 @@ class BannerAdapter(/* */): ListAdapter<BannerItem, RecyclerView.ViewHolder>(Ban
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemBannerBinding.inflate(layoutInflater, parent, false)
 
-                return ViewHolder(binding)
+                return ViewHolder(
+                    binding
+                )
             }
         }
     }

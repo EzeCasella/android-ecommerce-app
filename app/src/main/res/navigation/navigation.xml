@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/marketListFragment"
-        android:name="com.example.ecommerce.marketlist.MarketListFragment"
+        android:name="com.example.ecommerce.presentation.marketlist.MarketListFragment"
         android:label=""
         tools:layout="@layout/market_list_fragment" >
         <action
@@ -29,11 +29,11 @@
 
     <fragment
         android:id="@+id/cartCheckoutFragment"
-        android:name="com.example.ecommerce.cartcheckout.CartCheckoutFragment"
+        android:name="com.example.ecommerce.presentation.cartcheckout.CartCheckoutFragment"
         android:label="Cart Checkout"
         tools:layout="@layout/cart_checkout_fragment">
         <argument
             android:name="cart"
-            app:argType="com.example.ecommerce.domain.Cart"/>
+            app:argType="com.example.ecommerce.data.domain.Cart"/>
     </fragment>
 </navigation>

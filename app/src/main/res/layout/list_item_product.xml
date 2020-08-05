@@ -7,15 +7,15 @@
 
         <variable
             name="cartLine"
-            type="com.example.ecommerce.domain.CartLine" />
+            type="com.example.ecommerce.data.domain.CartLine" />
 
         <variable
             name="addClickListener"
-            type="com.example.ecommerce.marketlist.CartLineListener" />
+            type="com.example.ecommerce.presentation.marketlist.CartLineListener" />
 
         <variable
             name="removeClickListener"
-            type="com.example.ecommerce.marketlist.CartLineListener" />
+            type="com.example.ecommerce.presentation.marketlist.CartLineListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

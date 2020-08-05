@@ -6,7 +6,7 @@
     <data>
         <variable
             name="marketListViewModel"
-            type="com.example.ecommerce.marketlist.MarketListViewModel" />
+            type="com.example.ecommerce.presentation.marketlist.MarketListViewModel" />
 
     </data>
 

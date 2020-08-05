@@ -1,4 +1,4 @@
-package com.example.ecommerce.cartcheckout
+package com.example.ecommerce.presentation.cartcheckout
 
 import android.graphics.Rect
 import android.view.LayoutInflater
@@ -9,25 +9,33 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerce.R
-import com.example.ecommerce.domain.CartLine
-import com.example.ecommerce.marketlist.setImage
+import com.example.ecommerce.common.utils.setImage
+import com.example.ecommerce.data.domain.CartLine
 import kotlinx.android.synthetic.main.list_item_checkout_line.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 class CheckoutLineAdapter() :
-    ListAdapter<CheckoutLineListItem, RecyclerView.ViewHolder>(CheckoutLineDiffCallback()) {
+    ListAdapter<CheckoutLineListItem, RecyclerView.ViewHolder>(
+        CheckoutLineDiffCallback()
+    ) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun submitCartlines(list: List<CartLine>) {
-        val items = list.map { CheckoutLineListItem.CheckoutLine(it) }
+        val items = list.map {
+            CheckoutLineListItem.CheckoutLine(
+                it
+            )
+        }
         submitList(items)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return ViewHolder.from(parent)
+        return ViewHolder.from(
+            parent
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -53,7 +61,9 @@ class CheckoutLineAdapter() :
             fun from(parent: ViewGroup): ViewHolder {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.list_item_checkout_line, parent, false)
-                return ViewHolder(view)
+                return ViewHolder(
+                    view
+                )
             }
         }
     }

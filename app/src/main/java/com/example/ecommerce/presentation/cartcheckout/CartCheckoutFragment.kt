@@ -1,4 +1,4 @@
-package com.example.ecommerce.cartcheckout
+package com.example.ecommerce.presentation.cartcheckout
 
 import android.content.Context
 import android.os.Bundle
@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.R
+import com.example.ecommerce.presentation.cartcheckout.CartCheckoutFragmentArgs
 import kotlinx.android.synthetic.main.cart_checkout_fragment.*
 
 class CartCheckoutFragment(): Fragment(){
@@ -29,16 +30,23 @@ class CartCheckoutFragment(): Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val cart = CartCheckoutFragmentArgs.fromBundle(requireArguments()).cart
+        val cart = CartCheckoutFragmentArgs.fromBundle(
+            requireArguments()
+        ).cart
 
         Log.i("i/CartCheckoutFragment","Cart prods: ${cart.productsCount.value}")
 
         cart_lines_list?.apply {
             layoutManager = GridLayoutManager(context, 2)
 
-            addItemDecoration(ItemDecorationCheckoutColumns(20))
+            addItemDecoration(
+                ItemDecorationCheckoutColumns(
+                    20
+                )
+            )
 
-            val adapter = CheckoutLineAdapter()
+            val adapter =
+                CheckoutLineAdapter()
             this.adapter = adapter
             adapter.submitCartlines(cart.cartLines)
         }

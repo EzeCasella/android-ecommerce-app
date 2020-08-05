@@ -7,7 +7,7 @@
 
         <variable
             name="banner"
-            type="com.example.ecommerce.domain.Banner" />
+            type="com.example.ecommerce.data.domain.Banner" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
