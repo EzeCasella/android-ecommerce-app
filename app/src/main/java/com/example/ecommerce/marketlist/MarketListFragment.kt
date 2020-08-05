@@ -68,21 +68,31 @@ class MarketListFragment : Fragment() {
             marketListViewModel.onAddButtonClicked(cartLine)
 
 //            add_button.visibility = View.GONE
-        }, CartLineListener { cartLine ->
-            marketListViewModel.onRemoveButtonClicked(cartLine)
-        })
+            }, CartLineListener { cartLine ->
+                marketListViewModel.onRemoveButtonClicked(cartLine)
+            })
         binding.productsList.adapter = productAdapter
 
-        marketListViewModel.cartLines.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                Log.i("i/MarketListFragment","Hubo algun cambio")
-                productAdapter.submitProductsList(it, searchBarText)
-            }
-        })
+        marketListViewModel.apply {
+            cartLines.observe(viewLifecycleOwner, Observer {
+                it?.let {
+                    Log.i("i/MarketListFragment","Hubo algun cambio")
+                    productAdapter.submitProductsList(it, searchBarText)
+                }
+            })
 
-        marketListViewModel.cartProducts.observe(viewLifecycleOwner, Observer {
-            productAdapter.submitProductsList(marketListViewModel.cartLines.value, binding.searchBar.query.toString())
-        })
+            cartProducts.observe(viewLifecycleOwner, Observer {
+                productAdapter.submitProductsList(marketListViewModel.cartLines.value, binding.searchBar.query.toString())
+            })
+
+            cart.checkedOut.observe(viewLifecycleOwner, Observer {checkedOut ->
+                if (checkedOut) {
+                    marketListViewModel.onCartCheckedOut()
+                    cart.onCheckOutComplete()
+                }
+            })
+        }
+
         productAdapter.submitProductsList(marketListViewModel.cartLines.value, searchBarText)
 
         binding.searchBar.apply {

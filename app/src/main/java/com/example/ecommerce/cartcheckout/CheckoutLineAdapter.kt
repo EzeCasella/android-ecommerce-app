@@ -43,7 +43,7 @@ class CheckoutLineAdapter() :
         fun bind(cartLine: CartLine) {
             view.apply {
                 product_name.text = cartLine.product.name
-                product_price.text = resources.getString(R.string.display_price_0precision, (cartLine.product.price * cartLine.prodAmount.toBigDecimal()))
+                product_price.text = resources.getString(R.string.display_price_2precision, (cartLine.product.price * cartLine.prodAmount.toBigDecimal()))
                 product_units.text = resources.getQuantityString(R.plurals.units, cartLine.prodAmount, cartLine.prodAmount)
                 product_image.setImage(cartLine.product.unitImgURL)
             }

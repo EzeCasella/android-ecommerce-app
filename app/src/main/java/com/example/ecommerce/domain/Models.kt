@@ -15,7 +15,10 @@ enum class Category {
 @Parcelize
 class Cart(): Parcelable {
 
-    var checkedOut: Boolean = false
+    private var _checkedOut = MutableLiveData<Boolean>(false)
+    val checkedOut: LiveData<Boolean>
+        get() = _checkedOut
+
     val cartLines = mutableListOf<CartLine>()
     val totalCost: BigDecimal
         get() {
@@ -59,15 +62,14 @@ class Cart(): Parcelable {
 
     }
 
-    fun has(product: Product): Boolean {
-        val cartLine = cartLines.find { it.product.id == product.id }
-        return cartLine != null
-    }
-
-    fun empty(){
+    fun onCheckOut(){
         cartLines.clear()
         _productsCount.value = 0
         cartLineId = 0
+        _checkedOut.value = true
+    }
+    fun onCheckOutComplete(){
+        _checkedOut.value = false
     }
 }
 

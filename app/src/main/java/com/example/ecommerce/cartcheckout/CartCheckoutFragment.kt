@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.R
 import kotlinx.android.synthetic.main.cart_checkout_fragment.*
@@ -31,14 +33,15 @@ class CartCheckoutFragment(): Fragment(){
 
         Log.i("i/CartCheckoutFragment","Cart prods: ${cart.productsCount.value}")
 
-        cart_lines_list?.layoutManager = GridLayoutManager(context, 2)
+        cart_lines_list?.apply {
+            layoutManager = GridLayoutManager(context, 2)
 
-        cart_lines_list.addItemDecoration(ItemDecorationCheckoutColumns(20))
+            addItemDecoration(ItemDecorationCheckoutColumns(20))
 
-        val adapter = CheckoutLineAdapter()
-        cart_lines_list?.adapter = adapter
-
-        adapter.submitCartlines(cart.cartLines)
+            val adapter = CheckoutLineAdapter()
+            this.adapter = adapter
+            adapter.submitCartlines(cart.cartLines)
+        }
 
         cart_total_price.text = getString(R.string.display_price_2precision, cart.totalCost)
 
@@ -54,7 +57,7 @@ class CartCheckoutFragment(): Fragment(){
                 it.setOnClickListener {
                     val token = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(getString(R.string.saved_token_key), null)
                     if (token != null) {
-                        cartCheckoutViewModel.onCheckoutClick(cart, token, this)
+                        cartCheckoutViewModel.onCheckoutClick(cart, token)
                     } else {
 //                TODO() Implement null token behaviour
 //                        Refresh token
@@ -63,5 +66,12 @@ class CartCheckoutFragment(): Fragment(){
                 }
             }
         }
+
+        cartCheckoutViewModel.cartCheckedOut.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                cartCheckoutViewModel.onCheckoutComplete()
+                findNavController().navigateUp()
+            }
+        })
     }
 }
