@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.R
-import com.example.ecommerce.presentation.cartcheckout.CartCheckoutFragmentArgs
 import kotlinx.android.synthetic.main.cart_checkout_fragment.*
 
 class CartCheckoutFragment(): Fragment(){
@@ -63,14 +62,7 @@ class CartCheckoutFragment(): Fragment(){
             } else {
                 it.setBackgroundResource(R.drawable.radius_solid_primary)
                 it.setOnClickListener {
-                    val token = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(getString(R.string.saved_token_key), null)
-                    if (token != null) {
-                        cartCheckoutViewModel.onCheckoutClick(cart, token)
-                    } else {
-//                TODO() Implement null token behaviour
-//                        Refresh token
-//                        Pop error
-                    }
+                    cartCheckoutViewModel.onCheckoutClick(cart)
                 }
             }
         }

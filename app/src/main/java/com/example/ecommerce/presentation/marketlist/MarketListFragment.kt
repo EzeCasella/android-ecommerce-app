@@ -134,7 +134,6 @@ class MarketListFragment : Fragment() {
 
         marketListViewModel.fetchPurchases()
 
-
         return binding.root
     }
 

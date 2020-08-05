@@ -76,12 +76,6 @@ class MarketListViewModel : ViewModel() {
     }
 
     private fun getProducts() {
-        Log.i("i/MarketListViewModel","Inside getProducts")
-//        viewModelScope.launch {
-//            var response = productsRepo.getAll()
-//            _products = response
-//            setupCartLines()
-//        }
         viewModelScope.fetch({
             productsRepo.getAll()
         },{
